@@ -1,0 +1,9 @@
+router eigrp 65
+ network 10.12.1.0 0.0.0.255
+ network 10.123.1.0 0.0.0.255
+ network 172.16.101.0 0.0.0.255
+ network 172.16.102.0 0.0.0.255
+ network 172.16.103.0 0.0.0.255
+ network 192.168.1.0
+ redistribute bgp 65000 metric 100 1 255 1 1500
+ eigrp router-id 10.123.1.1
