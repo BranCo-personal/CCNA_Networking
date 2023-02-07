@@ -1,0 +1,42 @@
+DMVPN:
+
+REquriments to work
+-- mGRE & IPsec tunnel can be establish
+	- IKE policy 
+	-- crypto isakmp policy 
+-- NAT , You must use IPsec transport mode on transform set
+- Must set up 
+-- mpls ip
+
+DMVPN Configuration:
+en
+conf t
+crypto ipsec profile <name>
+set trandorm-set <transform-set-name>
+set identity
+set security association lifetime seconds 1890 (Overrides the gloabl lifetime val for ipsec)
+set pfs <group#> (if not set default of group1 will be used)
+
+After that is set up now you confiure the Hub and Spoke
+
+
+HUB Configuration:
+en
+conf t
+interface tunnel <#>(specifies the number of tunnel interface that you want to create)
+ip address 10.0.0.1 255.255.255.0 (All hubs and spokes that are in same subnet)
+ip mtu 1400 (set the MTU size of ip packets)
+ip nhrp authentication donttell (Authentication password, set on all hubs and spokes)
+ip nhrp map multicast dynamic (NHRP auto add spoke routers to multicast mapping)
+ip nhrp network-id <#> (EXP:99; specifies global unique 32-bit network ID)
+tunnel source <interface> (sets Source IP for Tunnel)
+tunnel key <key-number> (ID the tunnel key; Must be set on all hubs and spokes)
+tunnel mode gre multipoint (sets encapsulation mode to mGRE)
+tunnel protection ipsec profile <name> (same name above ^^; Associates tunnel with IPsec)
+bandwidth <#> (setting to 1000+ is critical for EIGRP protocols)
+ip tcp adjust-mss <1360> (set specififies for segment size; 500 - 1400)
+ip nhrp holdtime <#> (Set advertiment of NBMA; Range: 300-600)
+delay <#> (Change EIGRP routing metric for routes; Rec:1000)
+
+
+Spoke Configuration:

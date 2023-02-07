@@ -1,0 +1,332 @@
+NET 394 Lab 3: EIGRP
+EST: 1Hr 10min
+Command:
+
+	
+R1:
+en
+conf t
+hostname MB-R1
+
+router eigrp 100
+log-neighbor-changes
+router-id 192.168.127.1
+
+network 123.1.1.0 0.0.0.255
+network 123.1.10.0 0.0.0.255
+
+network 192.168.127.1 0.0.0.0
+network 1.1.1.1 0.0.0.255
+
+no auto-summary
+
+Lo0:
+conf t
+interface Lo0
+ip address 1.1.1.1 255.255.255.0
+no shut
+
+
+R2:
+en
+conf t
+hostname MB-R2
+
+router eigrp 100
+log-neighbor-changes
+router-id 192.168.127.2
+
+network 123.1.1.0 0.0.0.255
+network 123.1.10.0 0.0.0.255
+
+network 192.168.127.2 0.0.0.0
+network 2.2.2.2 0.0.0.255
+no auto-summary
+
+conf t
+interface Lo0
+ip address 2.2.2.2 255.255.255.0
+no shut
+
+
+R3:
+en
+conf t
+hostname MB-R3
+
+router eigrp 100
+log-neighbor-changes
+router-id 192.168.127.3
+
+
+network 123.1.1.3 0.0.0.255
+network 172.16.30.3 0.0.0.255
+
+network 192.168.127.3 0.0.0.0
+network 3.3.3.3 0.0.0.255
+no auto-summary
+passive-interface gig 0/1
+
+conf t
+interface Lo0
+ip address 3.3.3.3 255.255.255.0
+no shut
+
+R4:
+en
+conf t
+hostname MB-R4
+
+router eigrp 100
+log-neighbor-changes
+router-id 192.168.127.4
+
+network 123.1.1.4 0.0.0.255
+network 172.16.30.4 0.0.0.255 
+
+network 192.168.127.4 0.0.0.0
+network 4.4.4.4 0.0.0.255
+no auto-summary
+passive-interface gig 0/1
+
+conf t
+interface Lo0
+ip address 4.4.4.4 255.255.255.0
+no shut
+
+
+R5:
+en
+conf t
+hostname MB-R5
+
+router eigrp 100
+
+log-neighbor-changes
+router-id 192.168.127.5
+
+network 177.7.7.5 0.0.0.63
+network 172.16.30.5 0.0.0.255
+
+network 192.168.127.5 0.0.0.0
+network 5.5.5.5 0.0.0.255
+no auto-summary
+passive-interface g0/1
+
+conf t
+interface Lo0
+ip address 5.5.5.5 255.255.255.0
+no shut
+
+
+R6:
+en
+conf t
+hostname MB-R6
+
+router eigrp 100
+log-neighbor-changes
+
+router-id 192.168.127.6
+
+network 177.7.7.6 0.0.0.63
+network 172.16.30.6 0.0.0.255
+
+network 192.168.127.6 0.0.0.0
+network 6.6.6.6 0.0.0.255
+no auto-summary
+passive-interface g0/1
+
+conf t
+interface Lo0
+ip address 6.6.6.6 255.255.255.0
+no shut
+
+
+R7:
+en
+conf t
+hostname MB-R7
+
+router eigrp 100 
+log-neighbor-changes
+
+router-id 192.168.127.7
+
+network 177.7.7.7 0.0.0.63
+network 177.7.7.137 0.0.0.63
+
+network 192.168.127.7 0.0.0.0
+network 7.7.7.7 0.0.0.255
+no auto-summary
+
+conf t
+interface Lo0
+ip address 7.7.7.7 255.255.255.0
+no shut
+
+
+R8:
+en
+conf t
+hostname MB-R8
+
+router eigrp 100
+log-neighbor-changes
+
+router-id 192.168.127.8
+
+network 177.7.7.8 0.0.0.63
+network 177.7.7.138 0.0.0.63
+
+network 192.168.127.8 0.0.0.0
+network 8.8.8.8 0.0.0.255
+no auto-summary
+
+conf t
+interface Lo0
+ip address 8.8.8.8 255.255.255.0
+no shut
+
+
+R9:
+en
+conf t
+hostname MB-R9
+
+router eigrp 100
+log-neighbor-changes
+
+router-id 192.168.127.9
+
+network 199.9.9.9 0.0.0.255
+network 172.16.30.9 0.0.0.255
+
+network 192.168.127.9 0.0.0.0
+network 9.9.9.9 0.0.0.255
+no auto-summary
+passive-interface g0/1
+
+conf t
+interface Lo0
+ip address 9.9.9.9 255.255.255.0
+no shut
+
+
+R10:
+en
+conf t
+hostname MB-R10
+
+router eigrp 100
+log-neighbor-changes
+
+router-id 192.168.127.10
+
+network 199.9.9.10 0.0.0.255
+network 172.16.30.10  0.0.0.255
+
+network 192.168.127.10 0.0.0.0
+network 10.10.10.10 0.0.0.255
+
+no auto-summary
+passive-interface g0/1
+
+conf t
+interface Lo0
+ip address 10.10.10.10 255.255.255.0
+no shut
+
+
+R11:
+en
+conf t
+hostname MB-R11
+
+router eigrp 100 
+log-neighbor-changes
+
+router-id 192.168.127.11
+
+network 172.16.30.11 0.0.0.255
+
+network 192.168.127.11 0.0.0.0
+network 11.11.11.11 0.0.0.255
+no auto-summary
+passive-interface g0/1
+
+interface gig 0/1
+no ip split-horizon eigrp 100
+
+
+
+
+R12:
+en
+conf t
+hostname MB-R12
+
+router eigrp 100
+log-neighbor-changes
+
+
+router-id 192.168.127.12
+
+network 172.16.30.12 0.0.0.255
+
+network 192.168.127.12 0.0.0.0
+network 12.12.12.12 0.0.0.255
+
+no auto-summary
+passive-interface g0/1
+
+interface gig 0/1
+no ip split-horizon eigrp 100
+
+LOP2 IP ADD is 22.22.22.22 / Change to 12.12.12.12:
+ interface Loopback2
+ ip address 12.12.12.12 255.255.255.0
+ 
+ router eigrp 100
+no passive-interface gig 0/1
+
+
+
+wr mem
+
+Pings:
+ping 123.1.1.1
+ping 123.1.10.1
+ping 192.168.127.1
+ping 123.1.1.2
+ping 123.1.10.2
+ping 192.168.127.2
+ping 123.1.1.3
+ping 172.16.30.3
+ping 192.168.127.3	
+ping 192.168.127.4
+ping 177.7.7.5
+ping 172.16.30.5
+ping 192.168.127.5
+ping 177.7.7.6
+ping 172.16.30.6
+ping 192.168.127.6
+ping 177.7.7.7
+ping 177.7.7.137
+ping 192.168.127.7
+ping 177.7.7.8
+ping 177.7.7.138
+ping 192.168.127.8
+ping 199.9.9.9
+ping 172.16.30.9
+ping 192.168.127.9
+ping 199.9.9.10
+ping 172.16.30.10
+ping 192.168.127.10
+ping 172.16.30.11
+ping 192.168.127.11
+ping 11.11.11.11
+ping 172.16.30.12
+ping 192.168.127.12
+ping 12.12.12.12	
+

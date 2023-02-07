@@ -1,0 +1,161 @@
+OSPFv6:
+en
+conf t
+router ospfv3 <AS>
+area <AS>
+auto-cost reference-bandwidth 10
+default area <AS>
+ignore lsa mospf
+interface-id snmp-if-index
+log-adjacency-changes
+passive-interface default
+queue-depth update 1500
+router-id <IP>
+
+
+R8:
+en
+conf t
+ipv6 unicast-routing
+
+
+int gig 0/0
+no ip address
+ipv6 address 177:7:7::8/124
+ipv6 enable
+
+int gig 0/1
+no ip address
+ipv6 address 177:7:7::138/124
+ipv6 enable
+
+
+int loopback1 
+no ip address
+ipv6 address 192:168:127::8/128
+ipv6 enable
+
+
+
+
+
+router ospfv3 100
+area 100 nssa
+auto-cost reference-bandwidth 10
+default area 100 
+ignore lsa mospf
+interface-id snmp-if-index
+log-adjacency-changes
+queue-depth update 1500
+router-id 8.8.8.8
+
+
+R7:
+
+en
+conf t
+ipv6 unicast-routing
+
+int gig 0/0
+no ip address
+ipv6 address 177:7:7::7/124
+ipv6 enable
+
+int gig 0/1
+no ip address
+ipv6 address 177:7:7::137/124
+ipv6 enable
+
+
+int loopback1 
+no ip address
+ipv6 address 192:168:127::7/128
+ipv6 enable
+
+
+router ospfv3 100
+area 100 nssa
+auto-cost reference-bandwidth 10
+default area 100 
+ignore lsa mospf
+interface-id snmp-if-index
+log-adjacency-changes
+queue-depth update 1500
+router-id 7.7.7.7
+
+R6:
+
+en
+conf t
+ipv6 unicast-routing
+
+int gig 0/0
+no ip address
+ipv6 address 177:7:7::6/124
+ipv6 enable
+
+int gig 0/1
+no ip address
+ipv6 address 177:7:7::136/124
+ipv6 enable
+
+
+int loopback1 
+no ip address
+ipv6 address 192:168:127::6/128
+ipv6 enable
+
+
+router ospfv3 100
+area 100 stub
+auto-cost reference-bandwidth 10
+default area 100 
+ignore lsa mospf
+interface-id snmp-if-index
+log-adjacency-changes
+queue-depth update 1500
+router-id 6.6.6.6
+
+R5:
+
+en
+conf t
+ipv6 unicast-routing
+
+int gig 0/0
+no ip address
+ipv6 address 177:7:7::5/124
+ipv6 enable
+
+int gig 0/1
+no ip address
+ipv6 address 177:7:7::135/124
+ipv6 enable
+
+
+int loopback1 
+no ip address
+ipv6 address 192:168:127::5/128
+ipv6 enable
+
+
+router ospfv3 100
+area 100
+auto-cost reference-bandwidth 10
+default area 100 stub 
+ignore lsa mospf
+interface-id snmp-if-index
+log-adjacency-changes
+queue-depth update 1500
+router-id 5.5.5.5
+
+JP: 
+
+router ospfv3 200
+area 200 nssa
+auto-cost reference-bandwidth 10
+default area 200 
+ignore lsa mospf
+interface-id snmp-if-index
+log-adjacency-changes
+queue-depth update 1500

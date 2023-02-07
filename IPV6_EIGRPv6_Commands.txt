@@ -1,0 +1,228 @@
+IPV6(BASIC):
+en
+conf t
+int<int>
+no ip address
+ipv6 address<IPV6></n>/124
+ipv6 enable
+
+EIGRPv6:
+en
+conf t
+int <int>
+ipv6 eigrp <AS>
+
+en
+conf t
+ipv6 router eigrp <AS>
+eigrp router-id <IP>
+no shutdown
+
+
+
+R1:
+
+(BASIC IPV6):
+
+en
+conf t
+
+ipv6 unicast-routing
+
+int gig0/1
+no ip address
+ipv6 address 123:1:10::1/124
+ipv6 enable
+
+en
+conf t
+int gig0/0
+no ip address
+ipv6 address 123:1:1::1/124
+ipv6 enable
+
+conf t
+ipv6 address 1:1:1::1/128
+ipv6 enable
+
+conf t
+int loopback1
+no ip address
+ipv6 address 192:168:127::1/128
+ipv6 enable
+
+
+(EIGRPv6):
+
+en
+conf t
+int gig 0/1
+ipv6 eigrp 1
+
+en
+conf t
+int gig 0/0
+ipv6 eigrp 1
+
+en
+conf t
+int loopback1
+ipv6 eigrp 1
+
+
+en
+conf t
+ipv6 router eigrp 1
+eigrp router-id 1.1.1.1
+no shutdown
+
+
+
+R2:
+en
+conf t
+
+ipv6 unicast-routing
+
+int gig0/1
+no ip address
+ipv6 address 123:1:10::2/124
+ipv6 enable
+
+en
+conf t
+int gig0/0
+no ip address
+ipv6 address 123:1:1::2/124
+ipv6 enable
+
+en
+conf t
+int loopback1
+no ip address
+ipv6 address 192:168:127::2/128
+ipv6 enable
+
+
+(EIGRPv6):
+
+en
+conf t
+int gig 0/1
+ipv6 eigrp 1
+
+en
+conf t
+int gig 0/0
+ipv6 eigrp 1
+
+en
+conf t
+int loopback1
+ipv6 eigrp 1
+
+en
+conf t
+ipv6 router eigrp 1
+eigrp router-id 2.2.2.2
+no shutdown
+
+
+R3:
+en
+conf t
+
+ipv6 unicast-routing
+
+int gig0/1
+no ip address
+ipv6 address 172:16:30::3/124
+ipv6 enable
+
+en
+conf t
+int gig0/0
+no ip address
+ipv6 address 123:1:1::3/124
+ipv6 enable
+
+en
+conf t
+int loopback1
+no ip address
+ipv6 address 192:168:127::3/128
+ipv6 enable
+
+
+(EIGRPv6):
+
+en
+conf t
+int gig 0/1
+ipv6 eigrp 1
+
+en
+conf t
+int gig 0/0
+ipv6 eigrp 1
+
+en
+conf t
+int loopback1
+ipv6 eigrp 1
+
+en
+conf t
+ipv6 router eigrp 1
+eigrp router-id 3.3.3.3
+no shutdown
+
+
+R4:
+en
+conf t
+
+ipv6 unicast-routing
+
+int gig0/1
+no ip address
+ipv6 address 172:16:30::4/124
+ipv6 enable
+
+en
+conf t
+int gig0/0
+no ip address
+ipv6 address 123:1:1::4/124
+ipv6 enable
+
+en
+conf t
+int loopback1
+no ip address
+ipv6 address 192:168:127::4/128
+ipv6 enable
+
+
+(EIGRPv6):
+
+en
+conf t
+int gig 0/1
+ipv6 eigrp 1
+
+en
+conf t
+int gig 0/0
+ipv6 eigrp 1
+
+en
+conf t
+int loopback1
+ipv6 eigrp 1
+
+en
+conf t
+ipv6 router eigrp 1
+eigrp router-id 4.4.4.4
+no shutdown

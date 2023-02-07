@@ -1,0 +1,20 @@
+Inject 3-
+ISIS Commands:
+
+Enable ISIS:
+en
+conf t
+router isis [area-tag] (Null '0' is default)
+net (EXP: 49.001.0000.0000.00b.00)
+end
+
+
+Enable ISIS on interface:
+en
+conf t
+interface <Number>
+ip address <IP, Mask>
+ip router isis [area-tag] EXP(company1)
+end
+
+

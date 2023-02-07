@@ -1,0 +1,65 @@
+Micheal Branigan
+Est Time: 1hr
+Configuration
+
+Lab 6:
+VPN Tunnel: IPSEC - S-2-S
+
+R3:
+en
+conf t
+crypto isakmp policy 1 
+encr 3des 
+hash md5 
+authentiication pre-share
+group 2
+lifetime 86400
+
+crypto isakmp key cisco	address 172.16.30.5
+
+ACL:
+ip access-list extended VPN-TRAFFIC
+permit ip 172.16.30.5 0.0.0.255 172.16.30.3 0.0.0.255
+
+crypto ipsec transform-set TS esp-3des esp-md5-hmac
+
+crypto map CMAP 10 ipsec-isakmp
+set peer 172.16.30.5
+set transform-set TS
+match address VPN-TRAFFIC
+
+inter g0/1
+crypto map CMAP
+
+
+
+
+R5:
+conf t
+crypto isakmp policy 1 
+encr 3des 
+hash md5 
+authentication pre-share
+group 2
+lifetime 86400
+
+crypto isakmp key cisco	address 172.16.30.3
+
+ACL:
+ip access-list extended VPN-TRAFFIC
+permit ip  172.16.30.3 0.0.0.255 172.16.30.5 0.0.0.255
+
+
+crypto ipsec transform-set TS esp-3des esp-md5-hmac
+
+crypto map CMAP 10 ipsec-isakmp
+set peer 172.16.30.3
+set transform-set TS
+match address VPN-TRAFFIC
+
+inter g0/1
+crypto map CMAP
+
+
+
+ 
