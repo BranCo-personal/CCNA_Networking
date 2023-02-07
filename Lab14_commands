@@ -1,0 +1,505 @@
+R1:
+
+(Loopback Conf)
+interface loopback 1
+ip address 10.10.10.1 255.255.255.255
+
+interface loopback 2
+ip address 172.16.30.1 255.255.255.255
+
+(OSPF)
+en
+conf t
+router ospf 10
+network 10.123.0.0 0.0.255.255 area 0
+network 140.192.1.0 0.0.0.255 area 0	
+network 172.16.18.0 0.0.0.3 area 0
+
+(Loopback)
+network 192.1681.1 0.0.0.0 area 0
+network 10.10.10.1 0.0.0.0 area 0
+network 172.16.30.1 0.0.0.0 area 0
+
+router-id 192.168.1.1 (loopback)
+redistribute connected subnets
+
+(BGP)
+en
+conf t
+router bgp 10
+timers bgp 10 30
+bgp router-id interface gig 0/0
+neighbor 172.16.18.2 remote-as 10
+neighbor 10.123.3.3 remote-as 10
+neighbor 10.123.2.2 remote-as 10
+
+network 140.192.1.0 mask 255.255.255.0
+network 10.123.1.0 mask 255.255.0.0
+network 172.16.18.0 mask 255.255.255.252
+network 192.168.1.0 mask 255.255.255.255
+
+neighbor 172.16.18.2 update-source gig 0/2
+neighbor 172.16.18.2 activate
+
+neighbor 10.123.3.3 update-source gig 0/0
+neighbor 10.123.3.3 activate
+
+neighbor 10.123.2.2 update-source gig 0/0
+neighbor 10.123.2.2 activate
+
+
+
+
+R2:
+(Loopback Conf)
+
+interface Loopback0
+ip address 192.168.1.2 255.255.255.255
+
+interface Loopback1
+ip address 10.10.10.2 255.255.255.255
+
+interface Loopback2
+ip address 172.16.30.2 255.255.255.255
+
+(OSPF)
+en
+conf t
+router ospf 10
+
+(LoopBack)
+network 10.10.10.2 0.0.0.0 area 0
+network 172.16.30.2 0.0.0.0 area 0
+network 192.168.1.2 0.0.0.0 area 0
+
+(Connected)
+network 10.123.0.0 0.0.255.255 area 0
+network 172.21.24.0 0.0.0.255 area 0
+
+router-id 192.168.1.2 
+redistribute bgp 10 subnets
+
+passive-interface gig 0/1
+
+
+(BGP)
+en
+conf t
+router bgp 10
+
+bgp log-neighbor-changes
+bgp redistribute-internal
+
+
+network 10.123.0.0 mask 255.255.0.0
+network 172.21.24.0 mask 255.255.255.0
+
+(Loopback)
+network 10.10.10.2 mask 255.255.255.255
+network 172.16.30.2 mask 255.255.255.255
+network 192.168.1.2 mask 255.255.255.255
+
+neighbor 172.21.24.4 remote-as 888
+neighbor 172.21.24.4 update-source gig 0/1
+neighbor 172.21.24.4 activate
+
+redistribute ospf 10
+
+
+
+
+R3:
+(LoopBack conf)
+interface Loopback0
+ip address 192.168.1.3 255.255.255.255
+
+interface Loopback1
+ip address 10.10.10.3 255.255.255.255
+
+interface Loopback2
+ip address 172.16.30.3 255.255.255.255
+
+
+(OSPF)
+en
+conf t
+router ospf 10
+
+network 10.10.10.3 0.0.0.0 area 0
+network 172.16.30.3 0.0.0.0 area 0
+network 172.21.35.0 0.0.0.255 area 0	
+network 10.123.0.0 0.0.255.255 area 0
+network 192.168.1.3 0.0.0.0 area 0
+
+redistribute bgp 10 subnets
+
+router-id 192.168.1.3 
+passive-interface gig 0/1
+
+
+(BGP)
+en
+conf t
+router bgp 10
+
+bgp log-neighbor-changes
+bgp redistribute-internal
+
+network 10.123.0.0 mask 255.255.0.0
+network 172.21.35.0 mask 255.255.255.0
+
+network 10.10.10.3 mask 255.255.255.255
+network 172.16.30.3 mask 255.255.255.255
+network 192.168.1.3 mask 255.255.255.255
+
+neighbor 172.21.35.5 remote-as 888
+neighbor 172.21.35.5 update-source gig 0/1
+neighbor 172.21.35.5 activate
+
+redistribute ospf 10
+
+R4:
+(LoopBack conf)
+en
+conf t
+interface loopback 1
+ip address 10.10.10.4 255.255.255.255
+ 
+interface loopback 2
+ip address 172.16.30.4 255.255.255.255
+
+(EIGRP 888)
+en
+conf t
+router eigrp 888
+
+network 10.66.1.0 0.0.0.255
+network 172.21.24.0 0.0.0.255
+
+network 10.10.10.4 0.0.0.0
+network 172.16.30.4 0.0.0.0
+network 192.168.1.4 0.0.0.0
+
+redistribute bgp 888 metric 100 1 255 1 1500
+
+(BGP 888)
+en
+conf t
+router bgp 888
+
+bgp log-neighbor-changes
+bgp redistribute-internal
+
+network 10.66.1.0 mask 255.255.255.0
+network 172.21.24.0 mask 255.255.255.0
+
+network 10.10.10.4 mask 255.255.255.255
+network 172.16.30.4 mask 255.255.255.255
+network 192.168.1.4 mask 255.255.255.255
+
+neighbor 172.21.24.2 remote-as 10
+
+default-information originate
+redistribute eigrp 888
+
+
+R5:
+(LoopBack conf)
+
+interface Loopback1
+ip address 10.10.10.5 255.255.255.255
+no shut
+
+interface Loopback2
+ip address 172.16.30.5 255.255.255.255
+no shut
+
+(EIGRP 888)
+router eigrp 888
+
+network 10.59.0.0 0.0.255.255
+network 10.66.1.0 0.0.0.255
+network 172.21.35.0 0.0.0.255
+
+network 10.10.10.5 0.0.0.0
+network 172.16.30.5 0.0.0.0
+network 192.168.1.5 0.0.0.0
+	   
+	   
+redistribute bgp 888 metric 100 1 255 1 1500
+redistribute ospf 50 metric 100 1 255 1 1500
+
+(BGP)
+en 
+conf t
+router bgp 888
+
+bgp log-neighbor-changes
+bgp redistribute-internal
+
+network 10.59.0.0 mask 255.255.0.0
+network 10.66.1.0 mask 255.255.255.0
+network 172.21.35.0 mask 255.255.255.0
+
+network 10.10.10.5 mask 255.255.255.255
+network 172.16.30.5 mask 255.255.255.255
+network 192.168.1.5 mask 255.255.255.255
+
+neighbor 172.21.35.3 remote-as 10
+neighbor 172.21.35.3 activate
+
+redistribute eigrp 888
+
+
+
+R6:
+(LoopBack Conf)
+
+interface Loopback1
+ip address 6.6.6.6 255.255.255.255
+no shut
+
+interface Loopback2
+ip address 101.1.1.6 255.255.255.255
+no shut
+
+
+(EIGRP 888)
+router eigrp 888
+
+network 10.66.1.0 0.0.0.255
+network 14.4.4.0 0.0.0.255
+
+network 6.6.6.6 0.0.0.0
+network 101.1.1.6 0.0.0.0
+network 192.168.1.6 0.0.0.0
+
+R7:
+(loopback conf)
+interface Loopback0
+ip address 192.168.1.7 255.255.255.255
+no shut
+
+interface Loopback1
+ip address 10.10.10.7 255.255.255.255
+no shut
+
+interface Loopback2
+ip address 172.16.30.7 255.255.255.255
+no shut
+
+
+(EIGRP 888)
+en
+conf t
+router eigrp 888
+
+network 10.66.1.0 0.0.0.255
+network 172.16.0.0 
+network 172.16.79.0 0.0.0.3
+
+network 10.10.10.7 0.0.0.0
+network 172.16.30.7 0.0.0.0
+network 192.168.1.7 0.0.0.0
+
+redistribute ospf 50 metric 100 1 255 1 1500
+
+R8:
+
+(Gig Conf)
+en 
+conf t
+interface GigabitEthernet0/0
+ip address 199.99.99.131 255.255.255.
+	   
+(loopback conf)
+interface Loopback0
+ip address 10.10.10.8 255.255.255.255
+
+interface Loopback1
+ip address 192.168.1.8 255.255.255.255
+
+interface Loopback2
+ip address 172.16.30.8 255.255.255.255
+
+(OSPF 10)
+en
+conf t
+router ospf 10
+redistribute connected subnets
+redistribute ospf 50 subnets
+
+network 172.16.18.0 0.0.0.3 area 0
+
+default-information originate
+
+
+(OSPF 50) **NEED TO DO **
+router ospf 50
+redistribute connected subnets
+redistribute ospf 10 subnets
+
+network 199.99.99.0 0.0.0.127 area 0
+network 199.99.99.128 0.0.0.63 area 0
+network 199.99.99.192 0.0.0.63 area 0
+
+network 10.10.10.8 0.0.0.0 area 0
+network 172.16.30.8 0.0.0.0 area 0
+network 192.168.1.8 0.0.0.0 area 0
+
+default-information originate
+
+
+R9:
+(Gig Conf)
+interface GigabitEthernet0/0
+ip address 199.99.99.130 255.255.255.192
+no shut
+
+
+interface GigabitEthernet0/2
+ip address 172.16.79.2 255.255.255.252
+no shut
+
+
+interface GigabitEthernet0/3
+ip address 10.59.9.9 255.255.0.0
+no shut
+	   
+(LoopBack conf)
+interface Loopback0
+ip address 192.168.1.9 255.255.255.255
+
+interface Loopback1
+ip address 10.10.10.9 255.255.255.255
+
+interface Loopback2
+ip address 172.16.30.9 255.255.255.255
+
+
+(EIGRP)
+
+router eigrp 888
+network 10.59.0.0 0.0.255.255
+network 172.16.79.0 0.0.0.3
+redistribute ospf 50 metric 10000 100 255 1 1500
+
+
+(OSPF)
+router ospf 50
+redistribute eigrp 888 subnets
+
+network 10.59.0.0 0.0.255.255 area 0
+network 199.99.99.0 0.0.0.127 area 0
+network 199.99.99.128 0.0.0.63 area 0
+network 199.99.99.192 0.0.0.63 area 0
+
+network 10.10.10.9 0.0.0.0 area 0
+network 172.16.30.9 0.0.0.0 area 0
+network 192.168.1.9 0.0.0.0 area 0
+
+default-information originate
+
+R10:
+
+(Gig conf)
+interface GigabitEthernet0/0
+ip address 199.99.99.129 255.255.255.192
+no shut
+
+interface GigabitEthernet0/1
+ip address 199.99.99.1 255.255.255.128
+no shut
+
+
+interface GigabitEthernet0/2
+ip address 199.99.99.194 255.255.255.192
+no shut
+
+
+(LoopBack conf)
+en
+conf t
+interface Loopback0
+ip address 192.168.1.10 255.255.255.255
+no shut
+
+interface Loopback1
+ip address 10.10.10.10 255.255.255.255
+no shut 
+
+
+interface Loopback2
+ip address 172.16.30.10 255.255.255.255
+no shut
+
+
+(OSPF)
+en
+conf t
+router ospf 50
+
+network 199.99.99.0 0.0.0.127 area 0
+network 199.99.99.128 0.0.0.63 area 0
+network 199.99.99.192 0.0.0.63 area 0
+
+network 10.10.10.10 0.0.0.0 area 0
+network 172.16.30.10 0.0.0.0 area 0
+network 192.168.1.10 0.0.0.0 area 0
+
+R11:
+(Gig Conf)
+en
+conf t
+
+interface GigabitEthernet0/0
+ip address 199.99.99.132 255.255.255.192
+no shut
+
+interface GigabitEthernet0/1
+ip address 199.99.99.2 255.255.255.128
+no shut
+
+interface GigabitEthernet0/2
+ip address 199.99.99.193 255.255.255.192
+no shut
+
+
+(LoopBack conf)
+interface Loopback1
+ip address 8.8.8.8 255.255.255.0
+no shut
+
+interface Loopback2
+ip address 172.16.30.11 255.255.255.255
+no shut
+
+(OSPF)
+router ospf 50
+redistribute static subnets
+network 11.11.11.11 0.0.0.0 area 0
+network 199.99.99.0 0.0.0.127 area 0
+network 199.99.99.128 0.0.0.63 area 0
+network 199.99.99.192 0.0.0.63 area 0
+default-information originate
+
+ip route 0.0.0.0 0.0.0.0 8.8.8.1
+
+
+
+
+PC-A:
+ifconfig eth0 140.192.1.10 netmask 255.255.255.0 up
+route add default gw 140.192.1.1
+
+
+PC-B:
+ifconfig eth0 14.4.4.10 netmask 255.255.255.0 up
+route add default gw 14.4.4.6
+route add default gw 14.4.4.7
+
+PC-C:
+ifconfig eth0 199.99.99.4 netmask 255.255.255.128 up
+route add default gw 199.99.99.1
+route add default gw 199.99.99.2
+
