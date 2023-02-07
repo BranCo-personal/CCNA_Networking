@@ -1,0 +1,24 @@
+CLI Important  Commands:
+***************************
+Add IP Add to interface
+************************
+en
+conf t
+int <port N Port #>
+ip add <IP Subnetmask>
+no shut 
+end
+
+*************************
+Add Protocol to a router
+*************************
+
+en
+conf t
+router <Protcol> <AS(If Needed)>
+network <IP backwords Submask>
+metric <N> <N> <N> <N> (Optional)
+(Other Commands)
+
+
+Save
